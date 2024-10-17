@@ -5,7 +5,7 @@ require("dotenv").config();
 app.use(cors());
 
 app.get("/me", (req, res) => {
-  res.json({ message: "Hello from Service 2" });
+  res.json({ message: "This is Service Two" });
 });
 
 const port = process.env.PORT_APP2 || 3002;
