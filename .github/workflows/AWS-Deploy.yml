@@ -1,0 +1,19 @@
+name: CD Pipeline
+on:
+    workflow_run:
+        workflows: ["CI Pipeline"]
+        types:
+            - completed
+
+jobs:
+    build:
+        runs-on: self-hosted
+        steps:
+            - name: Pull Docker Image
+              run: docker pull "${{ secrets.DOCKER_USERNAME }}/sum-server"
+
+            - name: Stop and Remove Old Container
+              run: docker stop sum-server || true && docker rm sum-server || true
+
+            - name: Run New Container
+              run: docker run -d -p 3001:3001 -p 3002:3002 --name sum-server "${{ secrets.DOCKER_USERNAME }}/sum-server"
